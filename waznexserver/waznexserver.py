@@ -85,8 +85,7 @@ def show_diagnostic(grid_item_id):
 
 @app.route('/sliced/<int:grid_item_id>/<filename>')
 def show_sliced(grid_item_id, filename):
-    grid_item = db.session.query(models.GridItem).\
-                filter_by(id=grid_item_id).first()
+    grid_item = db.session.query(models.GridItem).filter_by(id=grid_item_id).first()
     gsp = grid_item.get_split_path()
     app.logger.info('Serving cell through Flask: ' + gsp + '/' + filename)
     return send_from_directory(os.path.join(app.config['SPLIT_FOLDER'], gsp),

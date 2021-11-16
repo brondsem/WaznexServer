@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  web:
+    build:
+      context: .
+    volumes:
+      - "waznex-data:/opt/waznexserver/WaznexServer/waznexserver/data:rw"
+    ports:
+      - "5000:5000"
+
+volumes:
+  waznex-data:
