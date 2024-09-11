@@ -5,9 +5,12 @@
 import os
 import sys
 
-from waznexserver import db
-import models
-import config
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+from . import db
+from . import models
+form . import config
 
 if __name__ == '__main__':
     # Create data dirs
@@ -27,20 +30,25 @@ if __name__ == '__main__':
             exit(1)
 
     # Create database
-    db.create_all()
+    app = Flask(__name__)
+    app.config.from_object(config)
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
+        db.session.commit()
 
-    # Find and add all of the ImageStatuses in models.py
-    statuses = [s for s in dir(models) if s.startswith('IMAGESTATUS_')]
-    for status in statuses:
-        id = getattr(models, status)
-        s = models.ImageStatus(id, status.split('_',1)[1])
-        db.session.add(s)
-    
-    # Find and add all of the ImageLevels in models.py
-    levels = [l for l in dir(models) if l.startswith('IMAGELEVEL_')]
-    for level in levels:
-        id = getattr(models, level)
-        l = models.ImageLevel(id, level.split('_',1)[1])
-        db.session.add(l)
+        # Find and add all of the ImageStatuses in models.py
+        statuses = [s for s in dir(models) if s.startswith('IMAGESTATUS_')]
+        for status in statuses:
+            id = getattr(models, status)
+            s = models.ImageStatus(id, status.split('_',1)[1])
+            db.session.add(s)
         
-    db.session.commit()
+        # Find and add all of the ImageLevels in models.py
+        levels = [l for l in dir(models) if l.startswith('IMAGELEVEL_')]
+        for level in levels:
+            id = getattr(models, level)
+            l = models.ImageLevel(id, level.split('_',1)[1])
+            db.session.add(l)
+            
+        db.session.commit()

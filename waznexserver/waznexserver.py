@@ -4,7 +4,6 @@
 
 import os
 import datetime
-import config
 from flask import Flask
 from flask import flash
 from flask import redirect
@@ -16,7 +15,10 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 from sqlalchemy import or_
 import timeago
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
+
+from . import config
+from . import models
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -24,7 +26,6 @@ app.config.from_object(config)
 app.config.from_envvar('WAZNEXSERVER_SETTINGS', silent=True)
 
 db = SQLAlchemy(app)
-import models
 
 
 # https://stackoverflow.com/a/64076444/
