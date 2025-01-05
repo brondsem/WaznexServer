@@ -10,7 +10,7 @@ from waznexserver import create_app
 
 
 def create_data_dirs():
-    data_folders = [df for df in dir(config) if df.endswith('_FOLDER')]
+    data_folders = [df for df in dir(config) if df.endswith("_FOLDER")]
     for folder in data_folders:
         newdir = os.path.abspath(getattr(config, folder))
         print(newdir)
@@ -31,23 +31,23 @@ def create_database():
     db.session.commit()
 
     # Find and add all of the ImageStatuses in models.py
-    statuses = [s for s in dir(models) if s.startswith('IMAGESTATUS_')]
+    statuses = [s for s in dir(models) if s.startswith("IMAGESTATUS_")]
     for status in statuses:
         id = getattr(models, status)
-        s = models.ImageStatus(id, status.split('_',1)[1])
+        s = models.ImageStatus(id, status.split("_", 1)[1])
         db.session.add(s)
 
     # Find and add all of the ImageLevels in models.py
-    levels = [l for l in dir(models) if l.startswith('IMAGELEVEL_')]
+    levels = [l for l in dir(models) if l.startswith("IMAGELEVEL_")]
     for level in levels:
         id = getattr(models, level)
-        l = models.ImageLevel(id, level.split('_',1)[1])
+        l = models.ImageLevel(id, level.split("_", 1)[1])
         db.session.add(l)
 
     db.session.commit()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     create_data_dirs()
 
     app = create_app()
